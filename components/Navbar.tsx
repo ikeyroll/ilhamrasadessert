@@ -39,15 +39,6 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartClick, onNavigate, cur
             <button onClick={() => handleNav('menu')} className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${currentPage === 'menu' ? 'text-brand-rose' : 'text-brand-dark hover:text-brand-rose'}`}>
               Menu
             </button>
-            <button onClick={() => handleNav('home', 'howto')} className="text-brand-dark hover:text-brand-rose px-3 py-2 rounded-md text-sm font-medium transition-colors">
-              How to Order
-            </button>
-            <button onClick={() => handleNav('home', 'testimonials')} className="text-brand-dark hover:text-brand-rose px-3 py-2 rounded-md text-sm font-medium transition-colors">
-              Testimonials
-            </button>
-            <button onClick={() => handleNav('home', 'contact')} className="text-brand-dark hover:text-brand-rose px-3 py-2 rounded-md text-sm font-medium transition-colors">
-              Contact
-            </button>
           </div>
 
           {/* Icons (Cart + Mobile Toggle) */}
@@ -83,9 +74,6 @@ const Navbar: React.FC<NavbarProps> = ({ cartCount, onCartClick, onNavigate, cur
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 flex flex-col">
             <button onClick={() => handleNav('home')} className="text-left text-brand-dark hover:bg-brand-pink/10 hover:text-brand-rose block px-3 py-2 rounded-md text-base font-medium">Home</button>
             <button onClick={() => handleNav('menu')} className="text-left text-brand-dark hover:bg-brand-pink/10 hover:text-brand-rose block px-3 py-2 rounded-md text-base font-medium">Menu</button>
-            <button onClick={() => handleNav('home', 'howto')} className="text-left text-brand-dark hover:bg-brand-pink/10 hover:text-brand-rose block px-3 py-2 rounded-md text-base font-medium">How to Order</button>
-            <button onClick={() => handleNav('home', 'testimonials')} className="text-left text-brand-dark hover:bg-brand-pink/10 hover:text-brand-rose block px-3 py-2 rounded-md text-base font-medium">Testimonials</button>
-            <button onClick={() => handleNav('home', 'contact')} className="text-left text-brand-dark hover:bg-brand-pink/10 hover:text-brand-rose block px-3 py-2 rounded-md text-base font-medium">Contact</button>
           </div>
         </div>
       )}
