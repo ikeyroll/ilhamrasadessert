@@ -1,47 +1,45 @@
-import React from 'react';
-import { MapPin, Phone, MessageCircle, Instagram, Star } from 'lucide-react';
-import { TESTIMONIALS, WHATSAPP_NUMBER } from '../constants';
 
-export const HowToOrder: React.FC = () => (
-  <section id="howto" className="py-16 bg-white">
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h2 className="text-3xl font-serif font-bold text-brand-dark mb-12">How to Order</h2>
+import React from 'react';
+import { MapPin, Phone, MessageCircle, Music, Star } from 'lucide-react';
+import { TESTIMONIALS, WHATSAPP_NUMBER } from '../constants';
+import { PageType } from '../types';
+
+interface SectionProps {
+  t: any;
+}
+
+export const HowToOrder: React.FC<SectionProps> = ({ t }) => (
+  <section id="howto" className="py-16 bg-white text-center">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 className="text-3xl font-serif font-bold text-brand-dark mb-12">{t.sections.howToOrder}</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="p-6 bg-brand-cream rounded-xl">
-          <div className="w-12 h-12 bg-brand-rose text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">1</div>
-          <h3 className="text-xl font-bold text-brand-dark mb-2">Browse Menu</h3>
-          <p className="text-gray-600">Choose your favorite dadih and desserts. Add them to your cart.</p>
-        </div>
-        <div className="p-6 bg-brand-cream rounded-xl">
-          <div className="w-12 h-12 bg-brand-rose text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">2</div>
-          <h3 className="text-xl font-bold text-brand-dark mb-2">Fill Details</h3>
-          <p className="text-gray-600">Review your cart and fill in your delivery or pickup details.</p>
-        </div>
-        <div className="p-6 bg-brand-cream rounded-xl">
-          <div className="w-12 h-12 bg-brand-rose text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">3</div>
-          <h3 className="text-xl font-bold text-brand-dark mb-2">Confirm on WhatsApp</h3>
-          <p className="text-gray-600">Send the generated order summary to us on WhatsApp to confirm.</p>
-        </div>
+        {t.sections.steps.map((step: any, idx: number) => (
+          <div key={idx} className="p-6 bg-brand-cream rounded-xl">
+            <div className="w-12 h-12 bg-brand-rose text-white rounded-full flex items-center justify-center text-xl font-bold mx-auto mb-4">{idx + 1}</div>
+            <h3 className="text-xl font-bold text-brand-dark mb-2">{step.title}</h3>
+            <p className="text-gray-600">{step.desc}</p>
+          </div>
+        ))}
       </div>
       <p className="mt-8 text-sm text-gray-500 bg-blue-50 inline-block px-4 py-2 rounded-full">
-        Note: Please order at least 1 day in advance for large quantities.
+        {t.sections.note}
       </p>
     </div>
   </section>
 );
 
-export const Testimonials: React.FC = () => (
+export const Testimonials: React.FC<SectionProps> = ({ t }) => (
   <section id="testimonials" className="py-16 bg-brand-cream">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 className="text-3xl font-serif font-bold text-brand-dark text-center mb-12">What They Say</h2>
+      <h2 className="text-3xl font-serif font-bold text-brand-dark text-center mb-12">{t.sections.testimonials}</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {TESTIMONIALS.map((t, i) => (
+        {TESTIMONIALS.map((t_data, i) => (
           <div key={i} className="bg-white p-6 rounded-lg shadow-sm border border-brand-pink/20">
             <div className="flex text-yellow-400 mb-2">
               {[...Array(5)].map((_, j) => <Star key={j} className="w-4 h-4 fill-current" />)}
             </div>
-            <p className="text-gray-600 italic mb-4">"{t.text}"</p>
-            <p className="text-brand-rose font-bold text-sm">- {t.author}</p>
+            <p className="text-gray-600 italic mb-4">"{t_data.text}"</p>
+            <p className="text-brand-rose font-bold text-sm">- {t_data.author}</p>
           </div>
         ))}
       </div>
@@ -49,50 +47,89 @@ export const Testimonials: React.FC = () => (
   </section>
 );
 
-export const Footer: React.FC = () => (
-  <footer id="contact" className="bg-brand-dark text-brand-cream py-12">
+interface FooterProps {
+  onNavigate: (page: PageType) => void;
+  t: any;
+}
+
+export const Footer: React.FC<FooterProps> = ({ onNavigate, t }) => (
+  <footer id="contact" className="bg-brand-dark text-brand-cream py-16">
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+        {/* Brand Section */}
         <div>
           <h3 className="text-2xl font-serif font-bold mb-4 text-white">Ilham Rasa Desert</h3>
-          <p className="text-gray-400 mb-4">Homemade dadih and dessert for your sweet moments.</p>
+          <p className="text-gray-400 mb-6 max-w-sm">{t.sections.footer.desc}</p>
           <div className="flex space-x-4">
-             {/* Social placeholders */}
-             <div className="flex items-center text-gray-400">
-                <Instagram className="w-5 h-5 mr-2" /> @ilhamrasadesert
-             </div>
+             <a 
+               href="https://www.tiktok.com/@elinda_idries" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               className="flex items-center text-gray-400 hover:text-white transition-colors group"
+             >
+                <Music className="w-5 h-5 mr-2 group-hover:text-brand-rose transition-colors" /> 
+                <span className="font-medium">@elinda_idries</span>
+             </a>
           </div>
         </div>
         
+        {/* Quick Links Section */}
         <div>
-          <h4 className="text-lg font-bold text-white mb-4">Contact Us</h4>
-          <div className="space-y-2">
-            <div className="flex items-center text-gray-300">
-              <MapPin className="w-5 h-5 mr-2" /> Petaling Jaya, Selangor
-            </div>
-            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="flex items-center text-gray-300 hover:text-white transition-colors">
-              <Phone className="w-5 h-5 mr-2" /> +{WHATSAPP_NUMBER}
-            </a>
-          </div>
-          <a 
-            href={`https://wa.me/${WHATSAPP_NUMBER}`}
-            className="mt-4 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-brand-dark bg-brand-pink hover:bg-brand-rose hover:text-white transition-colors"
-          >
-            <MessageCircle className="w-4 h-4 mr-2" /> WhatsApp Us
-          </a>
+          <h4 className="text-lg font-bold text-white mb-6">{t.sections.footer.quickLinks}</h4>
+          <ul className="space-y-4">
+            <li>
+              <button 
+                onClick={() => onNavigate('home')} 
+                className="text-gray-400 hover:text-brand-rose transition-colors font-medium text-left"
+              >
+                {t.nav.home}
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onNavigate('menu')} 
+                className="text-gray-400 hover:text-brand-rose transition-colors font-medium text-left"
+              >
+                {t.nav.menu}
+              </button>
+            </li>
+            <li>
+              <button 
+                onClick={() => onNavigate('gallery')} 
+                className="text-gray-400 hover:text-brand-rose transition-colors font-medium text-left"
+              >
+                {t.nav.gallery}
+              </button>
+            </li>
+          </ul>
         </div>
 
+        {/* Contact Section */}
         <div>
-           <h4 className="text-lg font-bold text-white mb-4">Quick Links</h4>
-           <ul className="space-y-2 text-gray-400">
-             <li><button onClick={() => window.scrollTo({top: 0, behavior: 'smooth'})} className="hover:text-white">Home</button></li>
-             <li><span className="text-gray-500">Menu</span></li>
-             <li><span className="text-gray-500">How to Order</span></li>
-           </ul>
+          <h4 className="text-lg font-bold text-white mb-6">{t.sections.footer.contact}</h4>
+          <div className="space-y-4">
+            <div className="flex items-center text-gray-300">
+              <MapPin className="w-5 h-5 mr-3 text-brand-rose" /> 
+              <span>Petaling Jaya, Selangor</span>
+            </div>
+            <a href={`https://wa.me/${WHATSAPP_NUMBER}`} className="flex items-center text-gray-300 hover:text-white transition-colors text-left">
+              <Phone className="w-5 h-5 mr-3 text-brand-rose" /> 
+              <span>+{WHATSAPP_NUMBER}</span>
+            </a>
+          </div>
+          <div className="mt-8">
+            <a 
+              href={`https://wa.me/${WHATSAPP_NUMBER}`}
+              className="inline-flex items-center px-6 py-3 border-2 border-brand-rose rounded-full shadow-sm text-sm font-bold text-brand-rose hover:bg-brand-rose hover:text-white transition-all transform hover:-translate-y-1"
+            >
+              <MessageCircle className="w-5 h-5 mr-2" /> WhatsApp Us
+            </a>
+          </div>
         </div>
       </div>
-      <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} Ilham Rasa Desert. All rights reserved.
+      
+      <div className="mt-16 pt-8 border-t border-gray-700/50 text-center text-gray-500 text-sm">
+        &copy; {new Date().getFullYear()} Ilham Rasa Desert. {t.sections.footer.rights}
       </div>
     </div>
   </footer>

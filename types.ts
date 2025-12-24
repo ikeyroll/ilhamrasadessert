@@ -23,3 +23,5 @@ export interface OrderForm {
 }
 
 export type CartView = 'list' | 'checkout';
+export type PageType = 'home' | 'menu' | 'gallery';
+export type Language = 'en' | 'bm';

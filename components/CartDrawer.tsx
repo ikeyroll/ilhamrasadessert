@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, MessageCircle, ArrowLeft, ShoppingBag } from 'lucide-react';
 import { CartItem, CartView, OrderForm } from '../types';
@@ -9,6 +10,7 @@ interface CartDrawerProps {
   cartItems: CartItem[];
   onUpdateQty: (id: string, delta: number) => void;
   onRemove: (id: string) => void;
+  t: any;
 }
 
 const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -16,7 +18,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
   onClose,
   cartItems,
   onUpdateQty,
-  onRemove
+  onRemove,
+  t
 }) => {
   const [view, setView] = useState<CartView>('list');
   const [form, setForm] = useState<OrderForm>({
@@ -79,11 +82,11 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
           <div className="px-4 py-6 bg-brand-cream border-b border-gray-100 sm:px-6 flex items-center justify-between">
              {view === 'checkout' ? (
                  <button onClick={() => setView('list')} className="flex items-center text-brand-dark hover:text-brand-rose">
-                     <ArrowLeft className="h-5 w-5 mr-2" /> Back to Cart
+                     <ArrowLeft className="h-5 w-5 mr-2" /> {t.cart.back}
                  </button>
              ) : (
                 <h2 className="text-lg font-serif font-bold text-brand-dark flex items-center">
-                    <ShoppingBag className="mr-2 h-5 w-5" /> Your Cart
+                    <ShoppingBag className="mr-2 h-5 w-5" /> {t.cart.title}
                 </h2>
              )}
             <button onClick={onClose} className="text-gray-400 hover:text-gray-500">
@@ -96,13 +99,13 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
             {cartItems.length === 0 ? (
               <div className="h-full flex flex-col items-center justify-center text-center space-y-4">
                 <ShoppingBag className="h-16 w-16 text-gray-300" />
-                <p className="text-gray-500 text-lg">Your cart is empty.</p>
-                <p className="text-brand-rose">Add some delicious dadih first!</p>
+                <p className="text-gray-500 text-lg">{t.cart.empty}</p>
+                <p className="text-brand-rose">{t.cart.addFirst}</p>
                 <button 
                   onClick={onClose}
                   className="mt-4 px-6 py-2 bg-brand-rose text-white rounded-md hover:bg-rose-500"
                 >
-                    Browse Menu
+                    {t.cart.browse}
                 </button>
               </div>
             ) : (
@@ -123,8 +126,8 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                            <div className="ml-4 flex flex-1 flex-col">
                              <div>
                                <div className="flex justify-between text-base font-medium text-gray-900">
-                                 <h3>{item.name}</h3>
-                                 <p className="ml-4">RM{(item.price * item.quantity).toFixed(2)}</p>
+                                 <h3 className="line-clamp-1">{item.name}</h3>
+                                 <p className="ml-4 flex-shrink-0">RM{(item.price * item.quantity).toFixed(2)}</p>
                                </div>
                                <p className="mt-1 text-sm text-gray-500">{item.unit}</p>
                              </div>
@@ -150,7 +153,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                                  onClick={() => onRemove(item.id)}
                                  className="font-medium text-red-500 hover:text-red-600 flex items-center"
                                >
-                                 <Trash2 className="h-4 w-4 mr-1" /> Remove
+                                 <Trash2 className="h-4 w-4 mr-1" />
                                </button>
                              </div>
                            </div>
@@ -160,29 +163,29 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                     
                     <div className="border-t border-gray-100 pt-6">
                         <div className="flex justify-between text-lg font-bold text-gray-900 mb-4">
-                            <p>Total</p>
+                            <p>{t.cart.subtotal}</p>
                             <p>RM{subtotal.toFixed(2)}</p>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500 mb-6">
-                            Shipping and taxes calculated via WhatsApp.
+                            {t.cart.disclaimer}
                         </p>
                         <button
                             onClick={() => setView('checkout')}
                             className="w-full flex items-center justify-center rounded-md border border-transparent bg-brand-rose px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-rose-500"
                         >
-                            Proceed to Checkout
+                            {t.cart.proceed}
                         </button>
                     </div>
                   </div>
                 ) : (
                   /* --- Checkout View --- */
-                  <form onSubmit={handleCheckout} className="space-y-4">
+                  <form onSubmit={handleCheckout} className="space-y-4 pb-8">
                     <div className="bg-blue-50 p-3 rounded-md text-sm text-blue-800 mb-4">
-                        Please fill in your details. We will generate a WhatsApp message for you to send to confirm the order.
+                        {t.cart.checkoutInfo}
                     </div>
 
                     <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name <span className="text-red-500">*</span></label>
+                        <label htmlFor="name" className="block text-sm font-medium text-gray-700">{t.cart.name} <span className="text-red-500">*</span></label>
                         <input
                             type="text"
                             name="name"
@@ -195,7 +198,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                     </div>
 
                     <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone Number <span className="text-red-500">*</span></label>
+                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700">{t.cart.phone} <span className="text-red-500">*</span></label>
                         <input
                             type="tel"
                             name="phone"
@@ -208,7 +211,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                     </div>
 
                     <div>
-                        <span className="block text-sm font-medium text-gray-700">Order Type</span>
+                        <span className="block text-sm font-medium text-gray-700">{t.cart.orderType}</span>
                         <div className="mt-2 space-y-2">
                             <div className="flex items-center">
                                 <input
@@ -220,7 +223,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                                     onChange={handleInputChange}
                                     className="h-4 w-4 border-gray-300 text-brand-rose focus:ring-brand-rose"
                                 />
-                                <label htmlFor="pickup" className="ml-3 block text-sm font-medium text-gray-700">Self Pickup</label>
+                                <label htmlFor="pickup" className="ml-3 block text-sm font-medium text-gray-700">{t.cart.pickup}</label>
                             </div>
                             <div className="flex items-center">
                                 <input
@@ -232,14 +235,14 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                                     onChange={handleInputChange}
                                     className="h-4 w-4 border-gray-300 text-brand-rose focus:ring-brand-rose"
                                 />
-                                <label htmlFor="delivery" className="ml-3 block text-sm font-medium text-gray-700">Delivery</label>
+                                <label htmlFor="delivery" className="ml-3 block text-sm font-medium text-gray-700">{t.cart.delivery}</label>
                             </div>
                         </div>
                     </div>
 
                     {form.type === 'delivery' && (
                         <div>
-                            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Delivery Address <span className="text-red-500">*</span></label>
+                            <label htmlFor="address" className="block text-sm font-medium text-gray-700">{t.cart.address} <span className="text-red-500">*</span></label>
                             <textarea
                                 name="address"
                                 id="address"
@@ -253,26 +256,25 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                     )}
 
                     <div>
-                        <label htmlFor="dateTime" className="block text-sm font-medium text-gray-700">Preferred Date & Time</label>
+                        <label htmlFor="dateTime" className="block text-sm font-medium text-gray-700">{t.cart.dateTime}</label>
                         <input
                             type="text"
                             name="dateTime"
                             id="dateTime"
-                            placeholder="e.g. Tomorrow 3PM"
+                            placeholder={t.cart.dateTimePlaceholder}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-rose focus:ring-brand-rose sm:text-sm p-2 border"
                             value={form.dateTime}
                             onChange={handleInputChange}
                         />
-                        <p className="mt-1 text-xs text-gray-500">Orders should be made at least 1 day in advance for large quantities.</p>
                     </div>
 
                     <div>
-                        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">Extra Notes (Optional)</label>
+                        <label htmlFor="notes" className="block text-sm font-medium text-gray-700">{t.cart.notes}</label>
                         <textarea
                             name="notes"
                             id="notes"
                             rows={2}
-                            placeholder="e.g. Mix flavors: 4 Choc, 4 Milk, 4 Strawberry"
+                            placeholder={t.cart.notesPlaceholder}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-rose focus:ring-brand-rose sm:text-sm p-2 border"
                             value={form.notes}
                             onChange={handleInputChange}
@@ -285,7 +287,7 @@ const CartDrawer: React.FC<CartDrawerProps> = ({
                             className="w-full flex items-center justify-center rounded-md border border-transparent bg-green-500 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-600"
                         >
                             <MessageCircle className="w-5 h-5 mr-2" />
-                            Confirm on WhatsApp
+                            {t.cart.confirm}
                         </button>
                     </div>
                   </form>
